@@ -1,0 +1,21 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Neovim
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y neovim
+      - name: Setup plenary
+        run: |
+          git clone https://github.com/nvim-lua/plenary.nvim.git tests/plenary.nvim
+      - name: Run tests
+        run: |
+          nvim --headless -c "PlenaryBustedDirectory tests {minimal_init = 'tests/minimal_init.lua'}"
